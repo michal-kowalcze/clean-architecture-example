@@ -3,6 +3,7 @@ package eu.kowalcze.michal.arch.clean.example.domain.usecase
 import eu.kowalcze.michal.arch.clean.example.domain.model.DaySchedule
 import eu.kowalcze.michal.arch.clean.example.domain.model.DayScheduleCreator
 import eu.kowalcze.michal.arch.clean.example.domain.repository.DayScheduleRepository
+import eu.kowalcze.michal.arch.clean.example.infrastructure.InMemoryDayScheduleRepository
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 import io.mockk.every
@@ -59,14 +60,3 @@ internal class GetScheduleUseCaseTest {
     }
 }
 
-private class InMemoryDayScheduleRepository : DayScheduleRepository {
-    private val store: MutableMap<LocalDate, DaySchedule> = mutableMapOf()
-    override fun get(scheduleDay: LocalDate): DaySchedule? = store[scheduleDay]
-
-    override fun save(daySchedule: DaySchedule): DaySchedule {
-        store[daySchedule.day] = daySchedule
-        return daySchedule
-    }
-
-    fun itemsCount() = store.size
-}
