@@ -1,7 +1,8 @@
 package eu.kowalcze.michal.arch.clean.example.domain.usecase
 
-import eu.kowalcze.michal.arch.clean.example.domain.schedule.DaySchedule
-import eu.kowalcze.michal.arch.clean.example.domain.schedule.DayScheduleCreator
+import eu.kowalcze.michal.arch.clean.example.domain.model.DaySchedule
+import eu.kowalcze.michal.arch.clean.example.domain.model.DayScheduleCreator
+import eu.kowalcze.michal.arch.clean.example.domain.repository.DayScheduleRepository
 import java.time.LocalDate
 
 class GetScheduleUseCase(

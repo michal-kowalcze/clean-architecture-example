@@ -1,4 +1,4 @@
-package eu.kowalcze.michal.arch.clean.example.domain.schedule
+package eu.kowalcze.michal.arch.clean.example.domain.model
 
 import java.time.LocalDate
 

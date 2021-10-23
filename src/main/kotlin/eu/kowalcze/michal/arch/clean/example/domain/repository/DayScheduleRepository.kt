@@ -1,6 +1,6 @@
-package eu.kowalcze.michal.arch.clean.example.domain.usecase
+package eu.kowalcze.michal.arch.clean.example.domain.repository
 
-import eu.kowalcze.michal.arch.clean.example.domain.schedule.DaySchedule
+import eu.kowalcze.michal.arch.clean.example.domain.model.DaySchedule
 import java.time.LocalDate
 
 
