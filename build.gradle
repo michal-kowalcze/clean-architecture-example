@@ -32,11 +32,16 @@ dependencies {
     // Use the Kotlin test library.
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
 
-    // Use the Kotlin JUnit integration.
-    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit'
+
+    testImplementation "io.mockk:mockk:1.12.0"
+    testImplementation 'io.kotest:kotest-runner-junit5:5.0.0.M3'
 }
 
 application {
     // Define the main class for the application.
     mainClass = 'eu.kowalcze.michal.arch.clean.example.AppKt'
+}
+
+test {
+    useJUnitPlatform()
 }
