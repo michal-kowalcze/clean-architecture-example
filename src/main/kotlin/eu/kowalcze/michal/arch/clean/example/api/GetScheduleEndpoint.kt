@@ -9,14 +9,17 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 @Controller
-class GetScheduleEndpoint(private val getScheduleUseCase: GetScheduleUseCase) {
+class GetScheduleEndpoint(
+    private val getScheduleUseCase: GetScheduleUseCase,
+    private val useCaseExecutor: UseCaseExecutor,
+) {
 
     @GetMapping("/schedules/{localDate}", produces = ["application/json"])
     fun getSchedules(@PathVariable localDate: String): ResponseEntity<DayScheduleDto> {
         // convert to domain model
         val scheduleDay = LocalDate.parse(localDate)
         // execute domain action
-        val daySchedule = getScheduleUseCase.apply(scheduleDay)
+        val daySchedule = useCaseExecutor.execute(getScheduleUseCase, scheduleDay)
         // convert to API
         val dayScheduleDto = daySchedule.toApi()
 
