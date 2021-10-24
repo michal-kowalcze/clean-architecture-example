@@ -1,7 +1,5 @@
 package eu.kowalcze.michal.arch.clean.example.api
 
-import eu.kowalcze.michal.arch.clean.example.domain.model.DaySchedule
-import eu.kowalcze.michal.arch.clean.example.domain.model.Slot
 import eu.kowalcze.michal.arch.clean.example.domain.usecase.GetScheduleUseCase
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
@@ -14,8 +12,11 @@ class GetScheduleEndpoint(private val getScheduleUseCase: GetScheduleUseCase) {
 
     @GetMapping("/schedules/{localDate}")
     fun getSchedules(@PathVariable localDate: String): DayScheduleDto {
+        // convert to domain model
         val scheduleDay = LocalDate.parse(localDate)
+        // execute domain action
         val daySchedule = getScheduleUseCase.getSchedule(scheduleDay)
+        // convert to API
         return daySchedule.toApi()
     }
 
