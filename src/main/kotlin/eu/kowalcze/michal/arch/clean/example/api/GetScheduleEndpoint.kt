@@ -16,7 +16,7 @@ class GetScheduleEndpoint(private val getScheduleUseCase: GetScheduleUseCase) {
         // convert to domain model
         val scheduleDay = LocalDate.parse(localDate)
         // execute domain action
-        val daySchedule = getScheduleUseCase.getSchedule(scheduleDay)
+        val daySchedule = getScheduleUseCase.apply(scheduleDay)
         // convert to API
         val dayScheduleDto = daySchedule.toApi()
 

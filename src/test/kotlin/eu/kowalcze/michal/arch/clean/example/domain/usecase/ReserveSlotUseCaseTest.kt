@@ -37,7 +37,7 @@ internal class ReserveSlotUseCaseTest {
         every { dayScheduleCreator.create(today) }.returns(givenSchedule)
 
         // when
-        val daySchedule = reserveSlotUseCase.reserve(SlotId(today, index = 0))
+        val daySchedule = reserveSlotUseCase.apply(SlotId(today, index = 0))
 
         // then
         daySchedule.slots[0].reserved shouldBe true

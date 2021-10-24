@@ -7,12 +7,12 @@ import eu.kowalcze.michal.arch.clean.example.domain.repository.DayScheduleReposi
 class ReserveSlotUseCase(
     private val dayScheduleRepository: DayScheduleRepository,
     private val getScheduleUseCase: GetScheduleUseCase,
-) {
+) : UseCase<SlotId, DaySchedule> {
 
-    fun reserve(slotId: SlotId): DaySchedule {
-        val daySchedule = getScheduleUseCase.getSchedule(scheduleDay = slotId.day)
+    override fun apply(input: SlotId): DaySchedule {
+        val daySchedule = getScheduleUseCase.apply(input = input.day)
 
-        val modifiedSchedule = daySchedule.reserveSlot(slotId.index)
+        val modifiedSchedule = daySchedule.reserveSlot(input.index)
 
         return dayScheduleRepository.save(modifiedSchedule)
     }

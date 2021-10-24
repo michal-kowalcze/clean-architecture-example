@@ -16,7 +16,7 @@ class ReserveSlotEndpoint(private val reserveSlotUseCase: ReserveSlotUseCase) {
         // convert to domain model
         val slotId = SlotId(LocalDate.parse(localDate), index)
         // execute domain action
-        val daySchedule = reserveSlotUseCase.reserve(slotId)
+        val daySchedule = reserveSlotUseCase.apply(slotId)
         // convert to API
         val dayScheduleDto = daySchedule.toApi()
 

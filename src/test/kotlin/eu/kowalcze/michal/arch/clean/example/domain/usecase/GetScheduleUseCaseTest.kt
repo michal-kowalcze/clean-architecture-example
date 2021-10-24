@@ -2,7 +2,6 @@ package eu.kowalcze.michal.arch.clean.example.domain.usecase
 
 import eu.kowalcze.michal.arch.clean.example.domain.model.DaySchedule
 import eu.kowalcze.michal.arch.clean.example.domain.model.DayScheduleCreator
-import eu.kowalcze.michal.arch.clean.example.domain.repository.DayScheduleRepository
 import eu.kowalcze.michal.arch.clean.example.infrastructure.InMemoryDayScheduleRepository
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
@@ -33,7 +32,7 @@ internal class GetScheduleUseCaseTest {
         daySchedulerRepository.save(givenSchedule)
 
         // when
-        val schedule = getScheduleUseCase.getSchedule(today)
+        val schedule = getScheduleUseCase.apply(today)
 
         // then
         schedule shouldBeSameInstanceAs givenSchedule
@@ -50,7 +49,7 @@ internal class GetScheduleUseCaseTest {
         every { dayScheduleCreator.create(today) }.returns(givenSchedule)
 
         // when
-        val schedule = getScheduleUseCase.getSchedule(today)
+        val schedule = getScheduleUseCase.apply(today)
 
         // then
         schedule shouldBeSameInstanceAs givenSchedule

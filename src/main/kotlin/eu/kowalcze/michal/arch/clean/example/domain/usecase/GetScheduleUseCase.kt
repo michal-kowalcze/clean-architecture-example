@@ -8,15 +8,15 @@ import java.time.LocalDate
 class GetScheduleUseCase(
     private val daySchedulerRepository: DayScheduleRepository,
     private val dayScheduleCreator: DayScheduleCreator,
-) {
+) : UseCase<LocalDate, DaySchedule> {
 
-    fun getSchedule(scheduleDay: LocalDate): DaySchedule {
-        val daySchedule = daySchedulerRepository.get(scheduleDay)
+    override fun apply(input: LocalDate): DaySchedule {
+        val daySchedule = daySchedulerRepository.get(input)
         if (daySchedule != null) {
             return daySchedule
         }
 
-        val newSchedule = dayScheduleCreator.create(scheduleDay)
+        val newSchedule = dayScheduleCreator.create(input)
         return daySchedulerRepository.save(newSchedule)
     }
 }
