@@ -1,6 +1,7 @@
 package eu.kowalcze.michal.arch.clean.example.api
 
 import eu.kowalcze.michal.arch.clean.example.domain.usecase.GetScheduleUseCase
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -10,14 +11,16 @@ import java.time.LocalTime
 @Controller
 class GetScheduleEndpoint(private val getScheduleUseCase: GetScheduleUseCase) {
 
-    @GetMapping("/schedules/{localDate}")
-    fun getSchedules(@PathVariable localDate: String): DayScheduleDto {
+    @GetMapping("/schedules/{localDate}", produces = ["application/json"])
+    fun getSchedules(@PathVariable localDate: String): ResponseEntity<DayScheduleDto> {
         // convert to domain model
         val scheduleDay = LocalDate.parse(localDate)
         // execute domain action
         val daySchedule = getScheduleUseCase.getSchedule(scheduleDay)
         // convert to API
-        return daySchedule.toApi()
+        val dayScheduleDto = daySchedule.toApi()
+
+        return ResponseEntity.ok().body(dayScheduleDto)
     }
 
 }

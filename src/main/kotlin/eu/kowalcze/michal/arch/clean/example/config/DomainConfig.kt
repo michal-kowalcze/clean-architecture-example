@@ -10,13 +10,13 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 open class DomainConfig {
     @Bean
-    fun getScheduleUseCase(dayScheduleRepository: DayScheduleRepository, dayScheduleCreator: DayScheduleCreator) =
+    open fun getScheduleUseCase(dayScheduleRepository: DayScheduleRepository, dayScheduleCreator: DayScheduleCreator) =
         GetScheduleUseCase(dayScheduleRepository, dayScheduleCreator)
 
     @Bean
-    fun reserveSlotUseCase(dayScheduleRepository: DayScheduleRepository, getScheduleUseCase: GetScheduleUseCase) =
+    open fun reserveSlotUseCase(dayScheduleRepository: DayScheduleRepository, getScheduleUseCase: GetScheduleUseCase) =
         ReserveSlotUseCase(dayScheduleRepository, getScheduleUseCase)
 
     @Bean
-    fun dayScheduleCreator() = DayScheduleCreator()
+    open fun dayScheduleCreator() = DayScheduleCreator()
 }

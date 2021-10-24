@@ -8,5 +8,5 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 open class InfrastructureConfig {
     @Bean
-    fun dayScheduleRepository(): DayScheduleRepository = InMemoryDayScheduleRepository()
+    open fun dayScheduleRepository(): DayScheduleRepository = InMemoryDayScheduleRepository()
 }
