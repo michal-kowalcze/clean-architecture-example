@@ -7,13 +7,13 @@ import org.springframework.http.ResponseEntity
 class SpringUseCaseExecutor(private val useCaseExecutor: UseCaseExecutor) {
     fun <DOMAIN_INPUT, DOMAIN_OUTPUT> execute(
         useCase: UseCase<DOMAIN_INPUT, DOMAIN_OUTPUT>,
-        input: DOMAIN_INPUT,
+        inputProvider: Any.() -> DOMAIN_INPUT,
         toApiConversion: (domainOutput: DOMAIN_OUTPUT) -> UseCaseApiResult<*>,
         handledExceptions: (ExceptionHandler.() -> Any)? = null,
     ): ResponseEntity<*> {
         return useCaseExecutor.execute(
             useCase,
-            input,
+            inputProvider,
             toApiConversion,
             handledExceptions
         ).toSpringResponse()

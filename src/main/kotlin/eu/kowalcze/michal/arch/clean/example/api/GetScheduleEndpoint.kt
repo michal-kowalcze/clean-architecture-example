@@ -16,21 +16,14 @@ class GetScheduleEndpoint(
 ) {
 
     @GetMapping("/schedules/{localDate}", produces = ["application/json"])
-    fun getSchedules(@PathVariable localDate: String): ResponseEntity<*> {
-        // convert to domain model
-        val scheduleDay = LocalDate.parse(localDate)
-
-        // execute domain action
-        return useCaseExecutor.execute(
-            useCase = getScheduleUseCase,
-            input = scheduleDay,
-            toApiConversion = {
-                // convert to API
-                val dayScheduleDto = it.toApi()
-                UseCaseApiResult(HttpServletResponse.SC_OK, dayScheduleDto)
-            },
-        )
-    }
+    fun getSchedules(@PathVariable localDate: String): ResponseEntity<*> = useCaseExecutor.execute(
+        useCase = getScheduleUseCase,
+        inputProvider = { LocalDate.parse(localDate) },
+        toApiConversion = {
+            val dayScheduleDto = it.toApi()
+            UseCaseApiResult(HttpServletResponse.SC_OK, dayScheduleDto)
+        },
+    )
 
 }
 

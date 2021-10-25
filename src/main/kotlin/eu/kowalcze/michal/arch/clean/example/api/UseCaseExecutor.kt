@@ -6,13 +6,13 @@ import kotlin.reflect.KClass
 class UseCaseExecutor(private val notificationGateway: NotificationGateway) {
     fun <DOMAIN_INPUT, DOMAIN_OUTPUT> execute(
         useCase: UseCase<DOMAIN_INPUT, DOMAIN_OUTPUT>,
-        input: DOMAIN_INPUT,
+        inputProvider: Any.() -> DOMAIN_INPUT,
         toApiConversion: (domainOutput: DOMAIN_OUTPUT) -> UseCaseApiResult<*>,
         handledExceptions: (ExceptionHandler.() -> Any)? = null,
     ): UseCaseApiResult<*> {
 
         try {
-            val domainOutput = useCase.apply(input)
+            val domainOutput = useCase.apply(inputProvider())
             return toApiConversion(domainOutput)
         } catch (e: Exception) {
             notificationGateway.notify(useCase, e)
