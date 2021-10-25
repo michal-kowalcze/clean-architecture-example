@@ -7,23 +7,27 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import java.time.LocalDate
 import java.time.LocalTime
+import javax.servlet.http.HttpServletResponse
 
 @Controller
 class GetScheduleEndpoint(
     private val getScheduleUseCase: GetScheduleUseCase,
-    private val useCaseExecutor: UseCaseExecutor,
+    private val useCaseExecutor: SpringUseCaseExecutor,
 ) {
 
     @GetMapping("/schedules/{localDate}", produces = ["application/json"])
     fun getSchedules(@PathVariable localDate: String): ResponseEntity<DayScheduleDto> {
         // convert to domain model
         val scheduleDay = LocalDate.parse(localDate)
-        // execute domain action
-        val daySchedule = useCaseExecutor.execute(getScheduleUseCase, scheduleDay)
-        // convert to API
-        val dayScheduleDto = daySchedule.toApi()
 
-        return ResponseEntity.ok().body(dayScheduleDto)
+        // execute domain action
+        return useCaseExecutor.execute(useCase = getScheduleUseCase,
+            input = scheduleDay,
+            toApiConversion = {
+                // convert to API
+                val dayScheduleDto = it.toApi()
+                UseCaseApiResult(HttpServletResponse.SC_OK, dayScheduleDto)
+            })
     }
 
 }
