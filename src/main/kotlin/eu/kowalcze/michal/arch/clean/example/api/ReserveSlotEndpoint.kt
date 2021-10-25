@@ -1,5 +1,7 @@
 package eu.kowalcze.michal.arch.clean.example.api
 
+import eu.kowalcze.michal.arch.clean.example.domain.model.InvalidSlotIndexException
+import eu.kowalcze.michal.arch.clean.example.domain.model.SlotAlreadyReservedException
 import eu.kowalcze.michal.arch.clean.example.domain.model.SlotId
 import eu.kowalcze.michal.arch.clean.example.domain.usecase.ReserveSlotUseCase
 import org.springframework.http.ResponseEntity
@@ -16,17 +18,27 @@ class ReserveSlotEndpoint(
 ) {
 
     @PutMapping("/schedules/{localDate}/{index}", produces = ["application/json"], consumes = ["application/json"])
-    fun getSchedules(@PathVariable localDate: String, @PathVariable index: Int): ResponseEntity<DayScheduleDto> {
+    fun getSchedules(@PathVariable localDate: String, @PathVariable index: Int): ResponseEntity<*> {
         // convert to domain model
         val slotId = SlotId(LocalDate.parse(localDate), index)
         // execute domain action
-        return useCaseExecutor.execute(useCase = reserveSlotUseCase,
+        return useCaseExecutor.execute(
+            useCase = reserveSlotUseCase,
             input = slotId,
             toApiConversion = {
                 // convert to API
                 val dayScheduleDto = it.toApi()
                 UseCaseApiResult(HttpServletResponse.SC_ACCEPTED, dayScheduleDto)
-            })
+            },
+            handledExceptions = {
+                exception(InvalidSlotIndexException::class, 422, "INVALID-SLOT-ID")
+                exception(
+                    SlotAlreadyReservedException::class,
+                    HttpServletResponse.SC_CONFLICT,
+                    "SLOT-ALREADY-RESERVED"
+                )
+            },
+        )
     }
 
 }

@@ -5,12 +5,18 @@ import org.springframework.http.ResponseEntity
 
 
 class SpringUseCaseExecutor(private val useCaseExecutor: UseCaseExecutor) {
-    fun <DOMAIN_INPUT, DOMAIN_OUTPUT, API_OUTPUT> execute(
+    fun <DOMAIN_INPUT, DOMAIN_OUTPUT> execute(
         useCase: UseCase<DOMAIN_INPUT, DOMAIN_OUTPUT>,
         input: DOMAIN_INPUT,
-        toApiConversion: (domainOutput: DOMAIN_OUTPUT) -> UseCaseApiResult<API_OUTPUT>
-    ): ResponseEntity<API_OUTPUT> {
-        return useCaseExecutor.execute(useCase, input, toApiConversion).toSpringResponse()
+        toApiConversion: (domainOutput: DOMAIN_OUTPUT) -> UseCaseApiResult<*>,
+        handledExceptions: (ExceptionHandler.() -> Any)? = null,
+    ): ResponseEntity<*> {
+        return useCaseExecutor.execute(
+            useCase,
+            input,
+            toApiConversion,
+            handledExceptions
+        ).toSpringResponse()
     }
 }
 
